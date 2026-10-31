@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Admin Panel
+{% endblock %}
+
+{% block main %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-white">Catalog Management Panel</h2>
+
+    <div class="card p-4 shadow-sm mb-5" style="max-width: 600px;">
+        <form action="/admin" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="name" class="form-label">Item Name</label>
+                <input autocomplete="off" placeholder="Item name" type="text" class="form-control" id="name" name="name" required>
+            </div>
+
+            <!-- Price and Quantity Rows -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="price" class="form-label">Price ($)</label>
+                    <input type="number" placeholder="Item Price" autocomplete="off" step="0.01" min="0" class="form-control" id="price" name="price" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="qty" class="form-label">Stock Quantity (Qty)</label>
+                    <input type="number" placeholder="Stock Quantity" autocomplete="off" min="0" class="form-control" id="qty" name="qty" required>
+                </div>
+            </div>
+
+            <!-- Keywords Field -->
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" autocomplete="off" class="form-control" id="description" name="description" placeholder=" add description">
+                <label for="keywords" class="form-label">Search Keywords</label>
+                <input type="text"  autocomplete="off" class="form-control" id="keywords" name="keywords" placeholder="e.g. summer, dress, cotton">
+                <div class="form-text">Separate individual terms using commas.</div>
+            </div>
+
+            <!-- File Input Field -->
+            <div class="mb-4">
+                <label for="item_image" class="form-label">Product Image Asset</label>
+                <input type="file" class="form-control" id="item_image" name="item_image" accept="image/*" required>
+            </div>
+
+            <button type="submit" class="btn btn-dark w-100">Add item</button>
+        </form>
+    </div>
+
+    <!-- Active Catalog Inventory Table -->
+    <h3 class="text-white">Database Table Entries (`items`)</h3>
+    <div class="table-responsive bg-white rounded p-3 shadow-sm mt-3">
+        <table class="table table-bordered table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Image Preview</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Stock Qty</th>
+                    <th>Description</th>
+                    <th>Keywords</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>
+                        <img src="{{ url_for('static', filename=item.img_path) }}" alt="Preview" style="width: 50px; height: 50px; object-fit: cover;">
+                    </td>
+                    <td>{{ item.name }}</td>
+                    <td>${{ '%.2f' | format(item.price) }}</td>
+                    <td>{{ item.qty }}</td>
+                    <td><span>{{ item.description}}</span></td>
+                    <td><span class="badge bg-secondary">{{ item.keywords }}</span></td>
+                    <td><form action="/delete_item" method="POST">
+                        <input type = "hidden" name="item_id" value="{{ item.id }}">
+                        <button id="delete_bt" type="submit">Delete</button></form></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+

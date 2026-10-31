@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Sign In
+{% endblock %}
+
+{% block main %}
+    <form action="/sign_up" method="post">
+            <div class='intro-card'>
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="uname" placeholder="Username" type="text">
+            <br>
+            <input class="form-control mx-auto w-auto" name="pwd" placeholder="Password" type="password">
+                <br>
+                <input class="form-control mx-auto w-auto" name="confirmpwd" placeholder="Confirm Password" type="password">
+                <br>
+            <input class="form-control mx-auto w-auto" name="email" placeholder="email" type="email">
+            <br>
+        <button class="btn btn-primary" type="submit">Sign In</button>
+        </div>
+    </form>
+{% endblock %}

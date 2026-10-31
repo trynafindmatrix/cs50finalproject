@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %} Shopping Cart{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
+        {% for item in cart_items %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ url_for('static', filename=item.image) }}" class="card-img-top" alt="{{ item.name }}" style="height: 200px; object-fit: cover;">
+
+
+                <div class="card-body bg-white">
+                    <h5 class="card-title text-dark">{{ item.name }}</h5>
+                    <p class="card-text text-success fw-bold">${{ "%.2f" | format(item.price) }}</p>
+                    <p class="card-text"><small class="text-muted">Quantity: {{ item.qty }} units</small></p>
+                </div>
+                <div style="text-align: center">
+                <form action="/delete_cart" method="POST">
+                    <input type="hidden" name = "item" value="{{ item.id }}">
+                    <button id="delete_bt">Remove</button>
+                </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <hr>
+    <form action="/checkout" method="POST">
+        <div style="text-align: center">
+        <p>Grand total: ${{total}}</p>
+        <button style="background-color:green">Checkout</button>
+        </div>
+    </form>
+
+</div>
+
+<hr>
+<footer class="container mt-5">
+    <div>
+        <p class="mb-1"><strong>Contact Us:</strong></p>
+        <p class="mb-1">Phone number: #####</p>
+        <p class="mb-0">Email : #########</p>
+    </div>
+</footer>
+{% endblock %}
